@@ -104,8 +104,6 @@ venv.bak/
 .mypy_cache/
 
 .sconsign.dblite
-bund.c
-bund.cpp
 *.dylib
 *.os
 *.so
