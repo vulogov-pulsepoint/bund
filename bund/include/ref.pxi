@@ -1,6 +1,4 @@
-import base64
-import ssl
-from urllib import request
+
 
 
 def load_file_from_the_reference(_ref):

@@ -1,12 +1,6 @@
 ##
 ##
 ##
-import os
-import posixpath
-import fnmatch
-from hy.lex import parser, lexer
-from hy.importer import hy_eval
-from hy import HyList
 
 
 def rchop(thestring, ending):
@@ -245,18 +239,10 @@ def list2(b, n, l=[]):
         l.append(l[-1] * 2)
         return list2(b, n, l)
 
+def set_dict_default(_d, _key, _default):
+    if _d.has_key(_key):
+        return _d
+    _d[_key] = _default
+    return _d
 
-def string_to_quoted_expr(s):
-    return HyList(parser.parse(lexer.lex(s)))
-
-def bund_eval(_line, env=None, _shell=None):
-    if env != None and not env.cfg["ZQ_UNSAFE_GLOBALS"]:
-        if _shell != None:
-            _shell.ok("Using safe globals")
-        e = env.Globals
-    else:
-        if _shell != None:
-            _shell.warning("Using unsafe globals")
-        e = globals()
-    return hy_eval(string_to_quoted_expr(_line), e, 'zq')[0]
 
