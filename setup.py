@@ -1,4 +1,5 @@
-from distutils.core import setup
+#from distutils.core import setup
+from setuptools import setup
 from distutils.extension import Extension
 from Cython.Build import cythonize
 
@@ -16,6 +17,7 @@ ext_modules=[
 setup(
     name = "bund",
     ext_modules = cythonize(ext_modules),
+    test_suite="tests",
     version='0.1',
     packages=[],
     url='',
