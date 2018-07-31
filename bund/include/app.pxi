@@ -1,7 +1,21 @@
 from cement.core import foundation, handler
 from cement.core.foundation import CementApp
+from termcolor import colored
 
+def banner(s):
+    try:
+        from pyfiglet import Figlet
+    except ImportError:
+        return s
+    f = Figlet()
+    return f.renderText(s)
+
+VERSION="0.1"
 APP_NAME="bund"
+BANNER="""%s
+
+%s %s
+"""%(colored(banner("( theBund )").strip(), "green"), colored("Version: ", "yellow"), colored(VERSION, "cyan"))
 
 class BUND_APP_MAIN(CementBaseController):
     class Meta:
@@ -10,6 +24,7 @@ class BUND_APP_MAIN(CementBaseController):
         arguments = [
             (['-k', '--keyring'],
             dict(action='store', help='Location of the KeyRing file')),
+            (['-v', '--version'], dict(action='version', version=BANNER)),
         ]
     @expose(hide=True)
     def default(self):
