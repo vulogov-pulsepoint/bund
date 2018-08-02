@@ -1,15 +1,12 @@
-from cement.core.controller import CementBaseController, expose
+from cliff.command import Command
 
-class BUND_APP_EVAL(CementBaseController):
-    class Meta:
-        label = 'app_eval'
-        stacked_on = 'base'
-        stacked_type = 'embedded'
-    @expose(help="Evaluate a raw Bund code")
-    def eval(self):
-        self.app.log.debug("Inside BUND_APP_EVAL.eval()")
-    @expose(help="Run the packaged Bund application")
-    def run(self):
-        self.app.log.debug("Inside BUND_APP_EVAL.run()")
+
+class BUND_APP_EVAL(Command):
+    log = logging.getLogger(__name__)
+
+    def take_action(self, parsed_args):
+        self.log.info('sending greeting')
+        self.log.debug('debugging')
+        self.app.stdout.write('hi!\n')
 
 

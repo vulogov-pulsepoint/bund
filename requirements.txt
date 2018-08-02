@@ -35,3 +35,4 @@ tensorflow==1.9.0
 termcolor==1.1.0
 torch==0.4.0
 Werkzeug==0.14.1
+colorlog==3.1.4

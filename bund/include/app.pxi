@@ -1,6 +1,6 @@
-from cement.core import foundation, handler
-from cement.core.foundation import CementApp
-from termcolor import colored
+from cliff.app import App
+from cliff.commandmanager import CommandManager
+
 
 def banner(s):
     try:
@@ -12,41 +12,66 @@ def banner(s):
 
 VERSION="0.1"
 APP_NAME="bund"
-BANNER="""%s
+COLOR_BANNER="""%s
 
 %s %s
-"""%(colored(banner("( theBund )").strip(), "green"), colored("Version: ", "yellow"), colored(VERSION, "cyan"))
+"""%(colored(banner("( theBund )"), "green"), colored("Version: ", "yellow"), colored(VERSION, "cyan"))
 
-class BUND_APP_MAIN(CementBaseController):
-    class Meta:
-        label = 'base'
-        description = "(theBund) evaluator and run-time"
-        arguments = [
-            (['-k', '--keyring'],
-            dict(action='store', help='Location of the KeyRing file')),
-            (['-v', '--version'], dict(action='version', version=BANNER)),
-        ]
-    @expose(hide=True)
-    def default(self):
-        self.app.log.info('Inside BUND_APP_MAIN.default()')
-        if self.app.pargs.keyring:
-            print("Recieved option: keyring => %s" % self.app.pargs.keyring)
+BW_BANNER="""
+%s
+
+Version: %s
+"""%(banner("( theBund )"), VERSION)
+
+class BUND_APP_MAIN(App):
+    def __init__(self):
+        super(BUND_APP_MAIN, self).__init__(
+            description='(theBund) executor and evaluator',
+            version='0.1',
+            command_manager=CommandManager('bundcmd'),
+            deferred_help=True,
+            interactive_app_factory=BUND_INTERACTIVE,
+        )
+        self.parser.add_argument('--keyring', action='store', default=None, help='Location of the keyring')
+        self.parser.add_argument('--no-color', action='store_true', default=False, dest='no_color', help='Turn off color output')
+        self.parser.add_argument('--print', action='store_true', default=False, dest='yes_print', help='Force printing of the EVAL result')
+        self.command_manager.add_command("eval", BUND_APP_EVAL)
+
+    def initialize_app(self, argv):
+        self.LOG.debug('initialize_app')
+
+    def prepare_to_run_command(self, cmd):
+        self.LOG.debug('prepare_to_run_command %s', cmd.__class__.__name__)
+
+    def clean_up(self, cmd, result, err):
+        self.LOG.debug('clean_up %s', cmd.__class__.__name__)
+        if err:
+            self.LOG.debug('got an error: %s', err)
+    def display_version(self):
+        if self.options.no_color:
+            print(BW_BANNER)
+        else:
+            print(COLOR_BANNER)
 
 class BUND_APP(BUND_LOG):
-    class Meta:
-        label = APP_NAME
-        base_controller = 'base'
-
     def __init__(self):
-        self.app = CementApp(APP_NAME)
+        self.app = BUND_APP_MAIN()
         self.ctx = BUND_CTX(self.app)
-        handler.register(BUND_APP_MAIN)
-        handler.register(BUND_APP_EVAL)
-        self.app.setup()
         self.debug("In the %s.__init__"%__name__)
-    def run(self):
-        self.debug("In the %s.run"%__name__)
-        self.app.run()
+        self.init_private_home()
+    def init_private_home(self):
+        self.home = os.path.join(os.path.expanduser("~"), ".bund")
+        if not check_directory(self.home):
+            os.mkdir(self.home)
+        # histfile = os.path.join(os.path.expanduser("~"), ".bund", "history")
+        # try:
+        #     readline.read_history_file(histfile)
+        #     readline.set_history_length(1000)
+        # except FileNotFoundError:
+        #     open(histfile, 'wb').close()
+        # atexit.register(readline.write_history_file, histfile)
+    def run(self, argv):
+        self.app.LOG.info("In the %s.run"%__name__)
+        self.app.run(argv)
     def __del__(self):
         self.debug("In the %s.__del__"%__name__)
-        self.app.close()

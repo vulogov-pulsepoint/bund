@@ -1,4 +1,6 @@
 import os
+import sys
+import atexit
 import posixpath
 import fnmatch
 import types
@@ -8,7 +10,11 @@ import msgpack
 import ssl
 import uuid
 import time
+import logging
+import readline
+from termcolor import colored
 from urllib import request
+
 
 include "include/lib.pxi"
 include "include/eval.pxi"
@@ -19,6 +25,7 @@ include "include/local_stack.pxi"
 include "include/resource_manager.pxi"
 include "include/log.pxi"
 include "include/ctx.pxi"
+include "include/interactive.pxi"
 include "include/app_eval.pxi"
 include "include/app.pxi"
 include "include/shell.pxi"

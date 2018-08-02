@@ -1,5 +1,3 @@
 def shell():
-    app = BUND_APP()
-    app.run()
-    del app
-    return True
+    bund_app = BUND_APP()
+    return bund_app.run(argv=sys.argv[1:])
