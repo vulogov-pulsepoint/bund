@@ -1434,6 +1434,7 @@ static const char __pyx_k_dest[] = "dest";
 static const char __pyx_k_eval[] = "eval";
 static const char __pyx_k_exit[] = "(exit)";
 static const char __pyx_k_file[] = "file";
+static const char __pyx_k_font[] = "font";
 static const char __pyx_k_help[] = "help";
 static const char __pyx_k_home[] = "home";
 static const char __pyx_k_info[] = "info";
@@ -1608,7 +1609,8 @@ static const char __pyx_k_posixpath[] = "posixpath";
 static const char __pyx_k_readlines[] = "readlines";
 static const char __pyx_k_termcolor[] = "termcolor";
 static const char __pyx_k_theBund_2[] = "theBund";
-static const char __pyx_k_theBund_3[] = "( theBund )";
+static const char __pyx_k_theBund_3[] = "(theBund)";
+static const char __pyx_k_theBund_4[] = "( theBund )";
 static const char __pyx_k_thestring[] = "thestring";
 static const char __pyx_k_var_names[] = "var_names";
 static const char __pyx_k_yes_print[] = "yes_print";
@@ -1625,6 +1627,7 @@ static const char __pyx_k_no_color_2[] = "--no-color";
 static const char __pyx_k_parent_app[] = "parent_app";
 static const char __pyx_k_renderText[] = "renderText";
 static const char __pyx_k_save_pkcs1[] = "save_pkcs1";
+static const char __pyx_k_smkeyboard[] = "smkeyboard";
 static const char __pyx_k_split_list[] = "split_list";
 static const char __pyx_k_store_true[] = "store_true";
 static const char __pyx_k_uncompress[] = "uncompress";
@@ -1968,6 +1971,7 @@ static PyObject *__pyx_n_s_flush;
 static PyObject *__pyx_n_s_fn;
 static PyObject *__pyx_n_s_fname;
 static PyObject *__pyx_n_s_fnmatch;
+static PyObject *__pyx_n_s_font;
 static PyObject *__pyx_n_s_formatter;
 static PyObject *__pyx_n_s_g;
 static PyObject *__pyx_n_s_get;
@@ -2121,6 +2125,7 @@ static PyObject *__pyx_n_s_shell_2;
 static PyObject *__pyx_n_s_sign;
 static PyObject *__pyx_n_u_sign;
 static PyObject *__pyx_n_s_signDocument;
+static PyObject *__pyx_n_s_smkeyboard;
 static PyObject *__pyx_n_s_snappy;
 static PyObject *__pyx_n_s_split;
 static PyObject *__pyx_n_s_split_list;
@@ -2141,6 +2146,7 @@ static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_kp_s_theBund;
 static PyObject *__pyx_n_s_theBund_2;
 static PyObject *__pyx_kp_s_theBund_3;
+static PyObject *__pyx_kp_s_theBund_4;
 static PyObject *__pyx_kp_s_theBund_executor_and_evaluator;
 static PyObject *__pyx_n_s_thestring;
 static PyObject *__pyx_n_s_time;
@@ -15725,7 +15731,7 @@ static PyObject *__pyx_pf_4bund_52banner(CYTHON_UNUSED PyObject *__pyx_self, PyO
  *         from pyfiglet import Figlet
  *     except ImportError:             # <<<<<<<<<<<<<<
  *         return s
- *     f = Figlet()
+ *     f = Figlet(font="smkeyboard")
  */
     __pyx_t_6 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_ImportError);
     if (__pyx_t_6) {
@@ -15739,7 +15745,7 @@ static PyObject *__pyx_pf_4bund_52banner(CYTHON_UNUSED PyObject *__pyx_self, PyO
  *         from pyfiglet import Figlet
  *     except ImportError:
  *         return s             # <<<<<<<<<<<<<<
- *     f = Figlet()
+ *     f = Figlet(font="smkeyboard")
  *     return f.renderText(s)
  */
       __Pyx_XDECREF(__pyx_r);
@@ -15777,70 +15783,57 @@ static PyObject *__pyx_pf_4bund_52banner(CYTHON_UNUSED PyObject *__pyx_self, PyO
   /* "bund/include/app.pxi":10
  *     except ImportError:
  *         return s
- *     f = Figlet()             # <<<<<<<<<<<<<<
+ *     f = Figlet(font="smkeyboard")             # <<<<<<<<<<<<<<
  *     return f.renderText(s)
  * 
  */
-  __Pyx_INCREF(__pyx_v_Figlet);
-  __pyx_t_4 = __pyx_v_Figlet; __pyx_t_5 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
-    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
-    if (likely(__pyx_t_5)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-      __Pyx_INCREF(__pyx_t_5);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_4, function);
-    }
-  }
-  if (__pyx_t_5) {
-    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(5, 10, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  } else {
-    __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(5, 10, __pyx_L1_error)
-  }
+  __pyx_t_7 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(5, 10, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_v_f = __pyx_t_7;
-  __pyx_t_7 = 0;
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_font, __pyx_n_s_smkeyboard) < 0) __PYX_ERR(5, 10, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_v_Figlet, __pyx_empty_tuple, __pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(5, 10, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_v_f = __pyx_t_4;
+  __pyx_t_4 = 0;
 
   /* "bund/include/app.pxi":11
  *         return s
- *     f = Figlet()
+ *     f = Figlet(font="smkeyboard")
  *     return f.renderText(s)             # <<<<<<<<<<<<<<
  * 
  * VERSION="0.1"
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_f, __pyx_n_s_renderText); if (unlikely(!__pyx_t_4)) __PYX_ERR(5, 11, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_f, __pyx_n_s_renderText); if (unlikely(!__pyx_t_7)) __PYX_ERR(5, 11, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_5 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_7);
     if (likely(__pyx_t_5)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
       __Pyx_INCREF(__pyx_t_5);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_4, function);
+      __Pyx_DECREF_SET(__pyx_t_7, function);
     }
   }
   if (!__pyx_t_5) {
-    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_s); if (unlikely(!__pyx_t_7)) __PYX_ERR(5, 11, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_v_s); if (unlikely(!__pyx_t_4)) __PYX_ERR(5, 11, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
   } else {
     #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_4)) {
+    if (PyFunction_Check(__pyx_t_7)) {
       PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_v_s};
-      __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(5, 11, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(5, 11, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_GOTREF(__pyx_t_4);
     } else
     #endif
     #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
+    if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
       PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_v_s};
-      __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_7)) __PYX_ERR(5, 11, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(5, 11, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_GOTREF(__pyx_t_4);
     } else
     #endif
     {
@@ -15850,14 +15843,14 @@ static PyObject *__pyx_pf_4bund_52banner(CYTHON_UNUSED PyObject *__pyx_self, PyO
       __Pyx_INCREF(__pyx_v_s);
       __Pyx_GIVEREF(__pyx_v_s);
       PyTuple_SET_ITEM(__pyx_t_8, 0+1, __pyx_v_s);
-      __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_8, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(5, 11, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_8, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(5, 11, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     }
   }
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_r = __pyx_t_7;
-  __pyx_t_7 = 0;
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_r = __pyx_t_4;
+  __pyx_t_4 = 0;
   goto __pyx_L0;
 
   /* "bund/include/app.pxi":5
@@ -18036,6 +18029,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_fn, __pyx_k_fn, sizeof(__pyx_k_fn), 0, 0, 1, 1},
   {&__pyx_n_s_fname, __pyx_k_fname, sizeof(__pyx_k_fname), 0, 0, 1, 1},
   {&__pyx_n_s_fnmatch, __pyx_k_fnmatch, sizeof(__pyx_k_fnmatch), 0, 0, 1, 1},
+  {&__pyx_n_s_font, __pyx_k_font, sizeof(__pyx_k_font), 0, 0, 1, 1},
   {&__pyx_n_s_formatter, __pyx_k_formatter, sizeof(__pyx_k_formatter), 0, 0, 1, 1},
   {&__pyx_n_s_g, __pyx_k_g, sizeof(__pyx_k_g), 0, 0, 1, 1},
   {&__pyx_n_s_get, __pyx_k_get, sizeof(__pyx_k_get), 0, 0, 1, 1},
@@ -18189,6 +18183,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_sign, __pyx_k_sign, sizeof(__pyx_k_sign), 0, 0, 1, 1},
   {&__pyx_n_u_sign, __pyx_k_sign, sizeof(__pyx_k_sign), 0, 1, 0, 1},
   {&__pyx_n_s_signDocument, __pyx_k_signDocument, sizeof(__pyx_k_signDocument), 0, 0, 1, 1},
+  {&__pyx_n_s_smkeyboard, __pyx_k_smkeyboard, sizeof(__pyx_k_smkeyboard), 0, 0, 1, 1},
   {&__pyx_n_s_snappy, __pyx_k_snappy, sizeof(__pyx_k_snappy), 0, 0, 1, 1},
   {&__pyx_n_s_split, __pyx_k_split, sizeof(__pyx_k_split), 0, 0, 1, 1},
   {&__pyx_n_s_split_list, __pyx_k_split_list, sizeof(__pyx_k_split_list), 0, 0, 1, 1},
@@ -18209,6 +18204,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_theBund, __pyx_k_theBund, sizeof(__pyx_k_theBund), 0, 0, 1, 0},
   {&__pyx_n_s_theBund_2, __pyx_k_theBund_2, sizeof(__pyx_k_theBund_2), 0, 0, 1, 1},
   {&__pyx_kp_s_theBund_3, __pyx_k_theBund_3, sizeof(__pyx_k_theBund_3), 0, 0, 1, 0},
+  {&__pyx_kp_s_theBund_4, __pyx_k_theBund_4, sizeof(__pyx_k_theBund_4), 0, 0, 1, 0},
   {&__pyx_kp_s_theBund_executor_and_evaluator, __pyx_k_theBund_executor_and_evaluator, sizeof(__pyx_k_theBund_executor_and_evaluator), 0, 0, 1, 0},
   {&__pyx_n_s_thestring, __pyx_k_thestring, sizeof(__pyx_k_thestring), 0, 0, 1, 1},
   {&__pyx_n_s_time, __pyx_k_time, sizeof(__pyx_k_time), 0, 0, 1, 1},
@@ -19057,7 +19053,7 @@ static int __Pyx_InitCachedConstants(void) {
   /* "bund/include/app.pxi":18
  * 
  * %s %s
- * """%(colored(banner("( theBund )"), "green"), colored("Version: ", "yellow"), colored(VERSION, "cyan"))             # <<<<<<<<<<<<<<
+ * """%(colored(banner("(theBund)"), "cyan"), colored("Version: ", "yellow"), colored(VERSION, "cyan"))             # <<<<<<<<<<<<<<
  * 
  * BW_BANNER="""
  */
@@ -19075,7 +19071,7 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * class BUND_APP_MAIN(App):
  */
-  __pyx_tuple__133 = PyTuple_Pack(1, __pyx_kp_s_theBund_3); if (unlikely(!__pyx_tuple__133)) __PYX_ERR(5, 24, __pyx_L1_error)
+  __pyx_tuple__133 = PyTuple_Pack(1, __pyx_kp_s_theBund_4); if (unlikely(!__pyx_tuple__133)) __PYX_ERR(5, 24, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__133);
   __Pyx_GIVEREF(__pyx_tuple__133);
 
@@ -20707,7 +20703,7 @@ if (!__Pyx_RefNanny) {
   /* "bund/include/app.pxi":18
  * 
  * %s %s
- * """%(colored(banner("( theBund )"), "green"), colored("Version: ", "yellow"), colored(VERSION, "cyan"))             # <<<<<<<<<<<<<<
+ * """%(colored(banner("(theBund)"), "cyan"), colored("Version: ", "yellow"), colored(VERSION, "cyan"))             # <<<<<<<<<<<<<<
  * 
  * BW_BANNER="""
  */
@@ -20722,9 +20718,9 @@ if (!__Pyx_RefNanny) {
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_3);
-  __Pyx_INCREF(__pyx_n_s_green);
-  __Pyx_GIVEREF(__pyx_n_s_green);
-  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_n_s_green);
+  __Pyx_INCREF(__pyx_n_s_cyan);
+  __Pyx_GIVEREF(__pyx_n_s_cyan);
+  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_n_s_cyan);
   __pyx_t_3 = 0;
   __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(5, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);

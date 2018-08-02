@@ -7,7 +7,7 @@ def banner(s):
         from pyfiglet import Figlet
     except ImportError:
         return s
-    f = Figlet()
+    f = Figlet(font="smkeyboard")
     return f.renderText(s)
 
 VERSION="0.1"
@@ -15,7 +15,7 @@ APP_NAME="bund"
 COLOR_BANNER="""%s
 
 %s %s
-"""%(colored(banner("( theBund )"), "green"), colored("Version: ", "yellow"), colored(VERSION, "cyan"))
+"""%(colored(banner("(theBund)"), "cyan"), colored("Version: ", "yellow"), colored(VERSION, "cyan"))
 
 BW_BANNER="""
 %s
