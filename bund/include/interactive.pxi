@@ -1,19 +1,37 @@
-import readline
+from prompt_toolkit import PromptSession
+from prompt_toolkit.styles import Style
+from prompt_toolkit.history import FileHistory
+from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
+from pygments.lexers.lisp import HyLexer
+from prompt_toolkit.lexers import PygmentsLexer
 from cliff.interactive import InteractiveApp
 
 class BUND_INTERACTIVE(InteractiveApp):
     def cmdloop(self):
-        readline.parse_and_bind("tab: complete")
         if self.parent_app.options.no_color:
             self.prompt = "( theBund ) "
         else:
-            self.prompt = "%s%s%s"%(colored("( ", "yellow"), colored("theBund", "cyan"), colored(" ) ", "green"))
+            style = Style.from_dict({
+                '':          '#e0f8ff',
+                'rightr': 'green',
+                'leftr': 'yellow',
+                'word': 'cyan',
+            })
+            self.prompt =  [
+                ('class:leftr', '( '),
+                ('class:word',       'theBund'),
+                ('class:rightr',     ' ) '),
+            ]
+        histfile = os.path.join(os.path.expanduser("~"), ".bund", "history")
+        session = PromptSession(self.prompt,
+                                style = style,
+                                history=FileHistory(histfile),
+                                lexer=PygmentsLexer(HyLexer),
+                                auto_suggest=AutoSuggestFromHistory())
         self.parent_app.display_version()
         while True:
-            self.stdout.write(self.prompt)
-            self.stdout.flush()
             try:
-                cmd = input().strip()
+                cmd = session.prompt().strip()
             except KeyboardInterrupt:
                 break
             except EOFError:
