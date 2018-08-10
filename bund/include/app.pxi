@@ -7,7 +7,7 @@ def banner(s):
         from pyfiglet import Figlet
     except ImportError:
         return s
-    f = Figlet(font="smkeyboard")
+    f = Figlet(font="stop")
     return f.renderText(s)
 
 VERSION="0.1"
@@ -23,8 +23,9 @@ BW_BANNER="""
 Version: %s
 """%(banner("( theBund )"), VERSION)
 
-class BUND_APP_MAIN(App):
+class BUND_APP_MAIN(App, BUND_LOG_ADAPTER):
     def __init__(self):
+        App.configure_logging = BUND_LOG_ADAPTER.configure_logging
         super(BUND_APP_MAIN, self).__init__(
             description='(theBund) executor and evaluator',
             version='0.1',
@@ -36,6 +37,7 @@ class BUND_APP_MAIN(App):
         self.parser.add_argument('--no-color', action='store_true', default=False, dest='no_color', help='Turn off color output')
         self.parser.add_argument('--print', action='store_true', default=False, dest='yes_print', help='Force printing of the EVAL result')
         self.command_manager.add_command("eval", BUND_APP_EVAL)
+        self.LOG.debug("In __init__")
 
     def initialize_app(self, argv):
         self.LOG.debug('initialize_app')
