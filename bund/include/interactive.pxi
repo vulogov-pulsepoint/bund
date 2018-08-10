@@ -8,15 +8,15 @@ from cliff.interactive import InteractiveApp
 
 class BUND_INTERACTIVE(InteractiveApp):
     def cmdloop(self):
+        style = Style.from_dict({
+            '':          '#e0f8ff',
+            'rightr': 'green',
+            'leftr': 'yellow',
+            'word': 'cyan',
+        })
         if self.parent_app.options.no_color:
             self.prompt = "( theBund ) "
         else:
-            style = Style.from_dict({
-                '':          '#e0f8ff',
-                'rightr': 'green',
-                'leftr': 'yellow',
-                'word': 'cyan',
-            })
             self.prompt =  [
                 ('class:leftr', '( '),
                 ('class:word',       'theBund'),

@@ -23,8 +23,15 @@ BW_BANNER="""
 Version: %s
 """%(banner("( theBund )"), VERSION)
 
-class BUND_APP_MAIN(App, BUND_LOG_ADAPTER):
+N_SUCC_CHECKS = 1
+
+class BUND_APP_EXCEPTION(Exception):
+    pass
+
+class BUND_APP_MAIN(App, BUND_LOG_ADAPTER, BUND_CONFIG_ADAPTER):
     def __init__(self):
+        self.ready = 0
+        self.isReady = False
         App.configure_logging = BUND_LOG_ADAPTER.configure_logging
         super(BUND_APP_MAIN, self).__init__(
             description='(theBund) executor and evaluator',
@@ -36,12 +43,20 @@ class BUND_APP_MAIN(App, BUND_LOG_ADAPTER):
         self.parser.add_argument('--keyring', action='store', default=None, help='Location of the keyring')
         self.parser.add_argument('--no-color', action='store_true', default=False, dest='no_color', help='Turn off color output')
         self.parser.add_argument('--print', action='store_true', default=False, dest='yes_print', help='Force printing of the EVAL result')
+        self.parser.add_argument('-c', action='store', default=False, dest='config_reference', help='Reference to the configuration')
         self.command_manager.add_command("eval", BUND_APP_EVAL)
         self.LOG.debug("In __init__")
 
     def initialize_app(self, argv):
-        self.LOG.debug('initialize_app')
-
+        self.LOG.debug('theBund is initializing')
+        self.load_configuration()
+        if self.ready != N_SUCC_CHECKS:
+            self.LOG.critical("theBund experienced an error during initialization and can not continue")
+            self.isReady = False
+            raise BUND_APP_EXCEPTION
+        else:
+            self.LOG.debug("theBund initialized succesfully")
+            self.isReady = True
     def prepare_to_run_command(self, cmd):
         self.LOG.debug('prepare_to_run_command %s', cmd.__class__.__name__)
 
@@ -61,17 +76,13 @@ class BUND_APP(BUND_LOG):
         self.ctx = BUND_CTX(self.app)
         self.debug("In the %s.__init__"%__name__)
         self.init_private_home()
+        self.init_module_cache()
+    def init_module_cache(self):
+        self.mcache = FilesCache(self)
     def init_private_home(self):
         self.home = os.path.join(os.path.expanduser("~"), ".bund")
         if not check_directory(self.home):
             os.mkdir(self.home)
-        # histfile = os.path.join(os.path.expanduser("~"), ".bund", "history")
-        # try:
-        #     readline.read_history_file(histfile)
-        #     readline.set_history_length(1000)
-        # except FileNotFoundError:
-        #     open(histfile, 'wb').close()
-        # atexit.register(readline.write_history_file, histfile)
     def run(self, argv):
         self.app.LOG.info("In the %s.run"%__name__)
         self.app.run(argv)
