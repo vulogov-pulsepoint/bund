@@ -29,6 +29,10 @@ class BUND_INTERACTIVE(InteractiveApp):
                                 lexer=PygmentsLexer(HyLexer),
                                 auto_suggest=AutoSuggestFromHistory())
         self.parent_app.display_version()
+        if not self.parent_app.options.yes_lisp:
+            self.parent_app.LOG.debug("Using pipelining syntax")
+        else:
+            self.parent_app.LOG.debug("Using Lisp syntax")
         while True:
             try:
                 cmd = session.prompt().strip()
@@ -38,8 +42,12 @@ class BUND_INTERACTIVE(InteractiveApp):
                 break
             if cmd.lower() in ['(exit)', '(quit)']:
                 break
-            pipeline = """(-> %s )"""%cmd
-            res = bund_eval(pipeline, None, None)
+            if not self.parent_app.options.yes_lisp:
+                pipeline = """(-> %s )"""%cmd
+            else:
+                pipeline = cmd
+            self.parent_app.LOG.debug("""Evaluating: %s"""%pipeline)
+            res = bund_eval(pipeline, self.parent_app, self.parent_app.shell)
             if self.parent_app.options.yes_print:
                 if self.parent_app.options.no_color:
                     print(res)

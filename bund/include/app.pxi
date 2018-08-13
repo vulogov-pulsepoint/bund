@@ -28,10 +28,16 @@ N_SUCC_CHECKS = 1
 class BUND_APP_EXCEPTION(Exception):
     pass
 
-class BUND_APP_MAIN(App, BUND_LOG_ADAPTER, BUND_CONFIG_ADAPTER):
-    def __init__(self):
+class BUND_APP_MAIN(App, BUND_LOG_ADAPTER,
+                    BUND_CONFIG_ADAPTER,
+                    BUND_GLOBAL_ADAPTER,
+                    BUND_EVAL_ADAPTER):
+    def __init__(self, shell):
         self.ready = 0
+        self.shell = shell
+        self.Globals = {}
         self.isReady = False
+        self.id = str(uuid.uuid4())
         App.configure_logging = BUND_LOG_ADAPTER.configure_logging
         super(BUND_APP_MAIN, self).__init__(
             description='(theBund) executor and evaluator',
@@ -43,13 +49,34 @@ class BUND_APP_MAIN(App, BUND_LOG_ADAPTER, BUND_CONFIG_ADAPTER):
         self.parser.add_argument('--keyring', action='store', default=None, help='Location of the keyring')
         self.parser.add_argument('--no-color', action='store_true', default=False, dest='no_color', help='Turn off color output')
         self.parser.add_argument('--print', action='store_true', default=False, dest='yes_print', help='Force printing of the EVAL result')
+        self.parser.add_argument('--unsafe', action='store_true', default=False, dest='unsafe_globals', help='Force using global interpreter Globals')
+        self.parser.add_argument('--lisp', action='store_true', default=False, dest='yes_lisp', help='Use classic Lisp syntax instead of pipelines')
         self.parser.add_argument('-c', action='store', default=False, dest='config_reference', help='Reference to the configuration')
         self.command_manager.add_command("eval", BUND_APP_EVAL)
         self.LOG.debug("In __init__")
 
+    def initialize_globals(self):
+        if not self.options.unsafe_globals:
+            self.Debug("Initialize safe Globals")
+        else:
+            self.Warning("Initialize UNSAFE Globals")
+            self.Globals = globals()
+        self.Globals = get_from_env("BUND_UNSAFE_GLOBALS", default=self.Globals, BUND_UNSAFE_GLOBALS=self.options.unsafe_globals)
+        self.registerGlobal(Time=time)
+        self.registerGlobal(UUID=uuid)
+
+    def registerGlobal(self, **kw):
+        for k in kw.keys():
+            self.Debug("(Global %(name)s ... )", name=k)
+            self.Globals[k] = kw[k]
+
     def initialize_app(self, argv):
         self.LOG.debug('theBund is initializing')
+        self.initialize_globals()
         self.load_configuration()
+        self.init_log_methods()
+        self.init_globals_methods()
+        self.init_eval_methods()
         if self.ready != N_SUCC_CHECKS:
             self.LOG.critical("theBund experienced an error during initialization and can not continue")
             self.isReady = False
@@ -70,9 +97,10 @@ class BUND_APP_MAIN(App, BUND_LOG_ADAPTER, BUND_CONFIG_ADAPTER):
         else:
             print(COLOR_BANNER)
 
+
 class BUND_APP(BUND_LOG):
     def __init__(self):
-        self.app = BUND_APP_MAIN()
+        self.app = BUND_APP_MAIN(self)
         self.ctx = BUND_CTX(self.app)
         self.debug("In the %s.__init__"%__name__)
         self.init_private_home()

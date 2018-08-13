@@ -3,6 +3,15 @@ from rainbow_logging_handler import RainbowLoggingHandler
 
 
 class BUND_LOG_ADAPTER:
+    def init_log_methods(self):
+        self.Debug("(Global (Log.* ...))")
+        m = make_module_on_the_fly("Log",
+                                   Debug=self.Debug,
+                                   Info=self.Info,
+                                   Error=self.Error,
+                                   Warning=self.Warning,
+                                   Critical=self.Critical)
+        self.registerGlobal(Log=m)
     def configure_logging(self):
         root_logger = logging.getLogger('bund')
         root_logger.setLevel(logging.DEBUG)
@@ -37,6 +46,19 @@ class BUND_LOG_ADAPTER:
         root_logger.addHandler(console)
         self.LOG = root_logger
         return
+    def Debug(self, msg, **kw):
+        self.LOG.debug(msg%kw)
+    def Info(self, msg, **kw):
+        self.LOG.info(msg%kw)
+    def Warning(self, msg, **kw):
+        self.LOG.warning(msg%kw)
+    def Error(self, msg, **kw):
+        self.LOG.error(msg%kw)
+    def Critical(self, msg, **kw):
+        self.LOG.critical(msg%kw)
+
+
+
 
 class BUND_LOG:
     def debug(self, msg):

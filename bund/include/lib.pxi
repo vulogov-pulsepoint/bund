@@ -174,14 +174,16 @@ def get_directory_name(path):
     return posixpath.basename(posixpath.abspath(path))
 
 def get_from_env(*var_names, **kw):
-    _default = None
+    print(kw)
     if kw.has_key("default"):
-        _default = kw["default"]
+        _default =  kw["default"]
+    else:
+        _default = {}
     for e in var_names:
-        if kw.has_key("kw") and kw["kw"].has_key(e):
-            return kw["kw"][e]
-        elif os.environ.has_key(e):
-            return os.environ[e]
+        if e in os.environ.keys():
+            _default[e] =  os.environ[e]
+        elif kw.has_key(e):
+            _default[e] = kw[e]
         else:
             pass
     return _default
@@ -245,4 +247,7 @@ def set_dict_default(_d, _key, _default):
     _d[_key] = _default
     return _d
 
-
+def merge_two_dicts(x, y):
+    z = x.copy()
+    z.update(y)
+    return z

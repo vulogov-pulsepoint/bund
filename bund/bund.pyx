@@ -12,6 +12,7 @@ import uuid
 import time
 import logging
 import json
+import types
 from termcolor import colored
 from urllib import request
 from gevent import monkey
@@ -29,7 +30,11 @@ include "include/bund_cache_of_files.pxi"
 include "include/log.pxi"
 include "include/ctx.pxi"
 include "include/configuration.pxi"
+include "include/internal_module.pxi"
+include "include/symbols.pxi"
+include "include/value.pxi"
 include "include/interactive.pxi"
+include "include/globals.pxi"
 include "include/app_eval.pxi"
 include "include/app.pxi"
 include "include/shell.pxi"
