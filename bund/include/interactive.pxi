@@ -22,7 +22,7 @@ class BUND_INTERACTIVE(InteractiveApp):
                 ('class:word',       'theBund'),
                 ('class:rightr',     ' ) '),
             ]
-        histfile = os.path.join(os.path.expanduser("~"), ".bund", "history")
+        histfile = os.path.join(self.parent_app.Globals["BUND_HOME"], "history")
         session = PromptSession(self.prompt,
                                 style = style,
                                 history=FileHistory(histfile),

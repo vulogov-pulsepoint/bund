@@ -174,7 +174,6 @@ def get_directory_name(path):
     return posixpath.basename(posixpath.abspath(path))
 
 def get_from_env(*var_names, **kw):
-    print(kw)
     if kw.has_key("default"):
         _default =  kw["default"]
     else:

@@ -1,17 +1,36 @@
 from rainbow_logging_handler import RainbowLoggingHandler
 
-
+def Debug(ctx, msg, **kw):
+    ctx.ctx.Debug(msg%kw)
+    return ctx
+def Info(ctx, msg, **kw):
+    ctx.ctx.Info(msg%kw)
+    return ctx
+def Error(ctx, msg, **kw):
+    ctx.ctx.Error(msg%kw)
+    return ctx
+def Warning(ctx, msg, **kw):
+    ctx.ctx.Warning(msg%kw)
+    return ctx
+def Critical(ctx, msg, **kw):
+    ctx.ctx.Critical(msg%kw)
+    return ctx
 
 class BUND_LOG_ADAPTER:
     def init_log_methods(self):
         self.Debug("(Global (Log.* ...))")
         m = make_module_on_the_fly("Log",
-                                   Debug=self.Debug,
-                                   Info=self.Info,
-                                   Error=self.Error,
-                                   Warning=self.Warning,
-                                   Critical=self.Critical)
+                                   Debug=Debug,
+                                   Info=Info,
+                                   Error=Error,
+                                   Warning=Warning,
+                                   Critical=Critical)
         self.registerGlobal(Log=m)
+        self.registerGlobal(Debug=self.Debug,
+                            Info=self.Info,
+                            Warning=self.Warning,
+                            Error=self.Error,
+                            Critical=self.Critical)
     def configure_logging(self):
         root_logger = logging.getLogger('bund')
         root_logger.setLevel(logging.DEBUG)

@@ -13,6 +13,7 @@ import time
 import logging
 import json
 import types
+from functools import wraps
 from termcolor import colored
 from urllib import request
 from gevent import monkey
@@ -33,6 +34,8 @@ include "include/configuration.pxi"
 include "include/internal_module.pxi"
 include "include/symbols.pxi"
 include "include/value.pxi"
+include "include/queue.pxi"
+include "include/import.pxi"
 include "include/interactive.pxi"
 include "include/globals.pxi"
 include "include/app_eval.pxi"

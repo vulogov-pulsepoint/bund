@@ -23,3 +23,23 @@ def Match(x,y):
     else:
         return False
 
+
+class BUND_SYMBOLS_ADAPTER:
+    def init_symbols_methods(self):
+        self.Debug("(Global Symbols ...)")
+        self.registerGlobal(Eq=Eq,
+                            Ne=Ne,
+                            Gt=Gt,
+                            Gte=Gte,
+                            Lg=Lg,
+                            Lge=Lge,
+                            TRUE=TRUE,
+                            FALSE=FALSE,
+                            T=1,
+                            F=0,
+                            NONE=None,
+                            NEW=NEW,
+                            PULL=PULL,
+                            DEFAULT=DEFAULT,
+                            Default=Default,
+                            CR=CR)
