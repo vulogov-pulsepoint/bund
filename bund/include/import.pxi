@@ -23,16 +23,25 @@ class BUND_IMPORT_ADAPTER:
             if d not in sys.path:
                 ctx.ctx.Debug("(Import.Path): adding %s"%d)
         return ctx
-    def Import_Load_and_Import(self, ctx, *refs):
+    def Import_Load_and_Import(self, ctx, **refs):
         VALIDATE(ctx)
-        for r in refs:
-            _name, _r = r
+        for _n, _r in refs.items():
             self.Debug("(Import.++): Loading %s"%_n)
-            res = self.mcache.add(_n, _r)
-            if not res:
-                self.Error("(Import.++): failed from %s"%_r)
+            ref_in_cache = self.mcache.local(_n)
+            if not ref_in_cache:
+                res = self.mcache.add(_n, _r)
+                if not res:
+                    self.Error("(Import.++): failed from %s"%_r)
+                    return FAIL(ctx, "Failed import")
+                ref_in_cache = self.mcache.local(_n)
+            self.Debug("(Import.++): Importing from %s"%ref_in_cache)
+            if ref_in_cache != None:
+                ## Let's load the module
+                m = imp.load_source(_n, ref_in_cache)
+            else:
+                self.Error("(Import.++): failed importing module %s"%_n)
                 return FAIL(ctx, "Failed import")
-
+            self._registerGlobal(_n, m)
         return ctx
     def Import_Module(self, name):
         return True

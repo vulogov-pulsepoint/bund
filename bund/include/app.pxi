@@ -42,6 +42,8 @@ class BUND_APP_MAIN(App, BUND_LOG_ADAPTER,
         self.Globals = {}
         self.isReady = False
         self.id = str(uuid.uuid4())
+        self.stamp = time.time()
+        self.last_valudation = time.time()
         App.configure_logging = BUND_LOG_ADAPTER.configure_logging
         super(BUND_APP_MAIN, self).__init__(
             description='(theBund) executor and evaluator',
@@ -78,6 +80,9 @@ class BUND_APP_MAIN(App, BUND_LOG_ADAPTER,
         for k in kw.keys():
             self.Debug("(Global %(name)s ... )", name=k)
             self.Globals[k] = kw[k]
+    def _registerGlobal(self, name, value):
+        self.Debug("(Global %(name)s ... )", name=name)
+        self.Globals[name] = value
 
 
     def initialize_app(self, argv):

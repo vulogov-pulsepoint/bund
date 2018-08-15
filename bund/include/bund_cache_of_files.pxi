@@ -26,6 +26,7 @@ class FilesCache:
         return True
     def update(self):
         if not self.fscache:
+            self.app.Error("Operation with uninitialized module cache")
             return False
         f = open(self.index_file, "w")
         f.write(json.dumps(self.c))
@@ -33,12 +34,14 @@ class FilesCache:
         return True
     def add(self, name, _ref):
         if not self.fscache:
+            self.app.Error("Operation with uninitialized module cache")
             return False
         self.refresh()
         if _ref in self.c.keys() and ((time.time()-self.c[_ref][0]) < self.expire):
             return True
         _mod = load_file_from_the_reference(_ref)
         if not _mod:
+            self.app.Error("Error loading module from the reference %s"%_ref)
             return False
         n = str(uuid.uuid4())
         n_fname = "%s/%s"%(self.fscache_dir, n)
