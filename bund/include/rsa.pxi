@@ -52,4 +52,13 @@ class BUND_RSA:
             return False
 
 
+class BUND_RSA_ADAPTER:
+    def __init__(self):
+        self.rsa = BUND_RSA()
+    def load_rsa(self):
+        self.Debug("(RSA.Load): Loading keyring from %s"%self.options.keyring)
+        self.rsa.loadKeyring(self.options.keyring)
+        self.rsa.new(self.Globals['BUND_RSA_KEY'])
+
+
 

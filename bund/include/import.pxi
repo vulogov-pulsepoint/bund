@@ -7,6 +7,7 @@ class BUND_IMPORT_ADAPTER:
         self.mcache.fsinit(mcpath, int(self.Globals["BUND_MODCACHE_EXPIRE"]))
         if not self.mcache.update():
             self.Warning("Error during update of the modules cache")
+        self.Debug("Modules cache has been initialized in %s"%mcpath)
     def init_import_methods(self) :
         self.Debug("(Global (Import.* ...))")
         m = make_module_on_the_fly("Import",

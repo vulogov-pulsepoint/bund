@@ -35,7 +35,12 @@ class BUND_APP_MAIN(App, BUND_LOG_ADAPTER,
                     BUND_SYMBOLS_ADAPTER,
                     BUND_IMPORT_ADAPTER,
                     BUND_QUEUE_ADAPTER,
-                    BUND_VALUE_ADAPTER):
+                    BUND_VALUE_ADAPTER,
+                    BUND_RSA_ADAPTER,
+                    BUND_RESOURCE_ADAPTER,
+                    BUND_IO_ADAPTER,
+                    BUND_PIPELINE_ADAPTER,
+                    BUND_ENCODERS_ADAPTER):
     def __init__(self, shell):
         self.ready = 0
         self.shell = shell
@@ -44,6 +49,7 @@ class BUND_APP_MAIN(App, BUND_LOG_ADAPTER,
         self.id = str(uuid.uuid4())
         self.stamp = time.time()
         self.last_valudation = time.time()
+        self.rm         = ResourceManager(self)
         App.configure_logging = BUND_LOG_ADAPTER.configure_logging
         super(BUND_APP_MAIN, self).__init__(
             description='(theBund) executor and evaluator',
@@ -54,7 +60,8 @@ class BUND_APP_MAIN(App, BUND_LOG_ADAPTER,
         )
         super(BUND_CONFIG_ADAPTER, self).__init__()
         super(BUND_IMPORT_ADAPTER, self).__init__()
-        self.parser.add_argument('--keyring', action='store', default=None, help='Location of the keyring')
+        super(BUND_IMPORT_ADAPTER, self).__init__()
+        self.parser.add_argument('--keyring', action='store', default="+~/.bund/keyring", help='Location of the keyring')
         self.parser.add_argument('--no-color', action='store_true', default=False, dest='no_color', help='Turn off color output')
         self.parser.add_argument('--print', action='store_true', default=False, dest='yes_print', help='Force printing of the EVAL result')
         self.parser.add_argument('--home', action='store', default="~/.bund/", dest='bund_home', help='Home directory for all things')
@@ -73,6 +80,9 @@ class BUND_APP_MAIN(App, BUND_LOG_ADAPTER,
         self.Globals = get_from_env("BUND_UNSAFE_GLOBALS", default=self.Globals, BUND_UNSAFE_GLOBALS=self.options.unsafe_globals)
         self.Globals = get_from_env("BUND_HOME", default=self.Globals, BUND_HOME=self.options.bund_home)
         self.Globals = get_from_env("BUND_MODCACHE_EXPIRE", default=self.Globals, BUND_MODCACHE_EXPIRE="900")
+        self.Globals = get_from_env("BUND_RSA_KEY", default=self.Globals, BUND_RSA_KEY="BundAdmin@Bund")
+        self.Globals = get_from_env("BUND_ID", default=self.Globals, BUND_ID=self.id)
+        self.Globals = get_from_env("BUND_STAMP", default=self.Globals, BUND_STAMP=self.stamp)
         self.registerGlobal(Time=time)
         self.registerGlobal(UUID=uuid)
 
@@ -90,14 +100,20 @@ class BUND_APP_MAIN(App, BUND_LOG_ADAPTER,
         self.initialize_globals()
         self.init_private_home()
         self.load_configuration()
+        self.load_rsa()
         self.init_log_methods()
         self.init_globals_methods()
         self.init_eval_methods()
         self.init_symbols_methods()
         self.init_import_methods()
         self.init_value_methods()
+        self.init_io_methods()
+        self.init_pipeline_methods()
+        self.init_encoders_methods()
+        self.init_resource_methods()
 
         self.initialize_fscache()
+        #atexit(self.close)
 
         if self.ready != N_SUCC_CHECKS:
             self.LOG.critical("theBund experienced an error during initialization and can not continue")
@@ -118,12 +134,14 @@ class BUND_APP_MAIN(App, BUND_LOG_ADAPTER,
             print(BW_BANNER)
         else:
             print(COLOR_BANNER)
+    def close(self):
+        self.LOG.debug('Closing instance')
+        self.rm.close()
 
 
 class BUND_APP(BUND_LOG):
     def __init__(self):
         self.app = BUND_APP_MAIN(self)
-        self.ctx = BUND_CTX(self.app)
         self.debug("In the %s.__init__"%__name__)
     def run(self, argv):
         self.app.LOG.info("In the %s.run"%__name__)
