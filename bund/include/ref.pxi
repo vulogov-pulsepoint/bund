@@ -34,14 +34,16 @@ def load_file_from_the_reference(_ref):
         ## Return the value as is
         return _ref
 
-def execute_from_the_reference(_ref):
+def execute_from_the_reference(_ref, _app=None, _shell=None):
     try:
         cmd = load_file_from_the_reference(_ref)
+        if cmd == None:
+            return (REF_ERROR_LOADING,"")
     except:
-        return REF_ERROR_LOADING
+        return (REF_ERROR_LOADING,"")
     try:
         pipeline = """(-> %s )"""%cmd
-        res = bund_eval(pipeline, None, None)
+        res = bund_eval(pipeline, _app, _shell)
     except:
-        return REF_ERROR_EXEC
-    return 0
+        return (REF_ERROR_EXEC, "msg")
+    return (0,"")
