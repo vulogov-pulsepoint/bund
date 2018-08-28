@@ -4,14 +4,27 @@ from hy import HyList
 
 
 def string_to_quoted_expr(s):
-    return HyList(parser.parse(lexer.lex(s)))
+    try:
+        return HyList(parser.parse(lexer.lex(s)))
+    except:
+        print(tbvaccine.TBVaccine().format_exc())
+        sys.exit(12)
 
 def bund_eval(_line, env=None, _shell=None):
     if not env:
         e = globals()
     else:
         e = env.Globals
-    return hy_eval(string_to_quoted_expr(_line), e, 'bund')[0]
+    try:
+        parsed = string_to_quoted_expr(_line)
+    except:
+        print(tbvaccine.TBVaccine().format_exc())
+        sys.exit(11)
+    try:
+        return hy_eval(parsed, e, 'bund')[0]
+    except:
+        print(tbvaccine.TBVaccine().format_exc())
+        sys.exit(10)
 
 class BUND_EVAL_ADAPTER:
     def init_eval_methods(self):

@@ -14,9 +14,12 @@ import logging
 import json
 import types
 import imp
+import tbvaccine
+tbvaccine.add_hook(isolate=False)
 from functools import wraps
 from termcolor import colored
 from urllib import request
+from importlib.machinery import SourceFileLoader
 from gevent import monkey
 monkey.patch_all()
 
