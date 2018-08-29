@@ -1,0 +1,7 @@
+;;
+;; Do not forget to pass -b +./bund/examples/bootstrap_sample.bund
+;;
+(==>)
+    (VALUE 42)
+    (Sample.DoubleMe)
+    (.).json (print)

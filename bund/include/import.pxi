@@ -38,7 +38,6 @@ class BUND_IMPORT_ADAPTER:
             self.Debug("(Import.++): Importing from %s"%ref_in_cache)
             if ref_in_cache != None:
                 ## Let's load the module
-                #m = imp.load_source(_n, ref_in_cache)
                 m = SourceFileLoader(_n, ref_in_cache).load_module()
             else:
                 self.Error("(Import.++): failed importing module %s"%_n)

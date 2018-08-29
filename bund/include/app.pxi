@@ -23,7 +23,7 @@ BW_BANNER="""
 Version: %s
 """%(banner("( theBund )"), VERSION)
 
-N_SUCC_CHECKS = 1
+N_SUCC_CHECKS = 2
 
 class BUND_APP_EXCEPTION(Exception):
     pass
@@ -68,6 +68,7 @@ class BUND_APP_MAIN(App, BUND_LOG_ADAPTER,
         self.parser.add_argument('--unsafe', action='store_true', default=False, dest='unsafe_globals', help='Force using global interpreter Globals')
         self.parser.add_argument('--lisp', action='store_true', default=False, dest='yes_lisp', help='Use classic Lisp syntax instead of pipelines')
         self.parser.add_argument('-c', action='store', default=False, dest='config_reference', help='Reference to the configuration')
+        self.parser.add_argument('-b', action='store', default=False, dest='bund_bootstrap', help='Reference to the bootstrap')
         self.command_manager.add_command("eval", BUND_APP_EVAL)
         self.LOG.debug("In __init__")
 
@@ -113,7 +114,8 @@ class BUND_APP_MAIN(App, BUND_LOG_ADAPTER,
         self.init_resource_methods()
 
         self.initialize_fscache()
-        #atexit(self.close)
+
+        self.load_bootstrap()
 
         if self.ready != N_SUCC_CHECKS:
             self.LOG.critical("theBund experienced an error during initialization and can not continue")
@@ -122,6 +124,7 @@ class BUND_APP_MAIN(App, BUND_LOG_ADAPTER,
         else:
             self.LOG.debug("theBund initialized succesfully")
             self.isReady = True
+
     def prepare_to_run_command(self, cmd):
         self.LOG.debug('prepare_to_run_command %s', cmd.__class__.__name__)
 

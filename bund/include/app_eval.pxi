@@ -4,7 +4,7 @@ from cliff.command import Command
 class BUND_APP_EVAL(Command):
     log = logging.getLogger("bund")
     def get_parser(self, parser):
-        self.app.Debug("Building parser fpr %s"%parser)
+        self.app.Debug("Building parser for %s"%parser)
         _parser = super(BUND_APP_EVAL, self).get_parser(parser)
         _parser.add_argument('reference', default=None)
         _parser.add_argument('args', nargs='*', default=None)
